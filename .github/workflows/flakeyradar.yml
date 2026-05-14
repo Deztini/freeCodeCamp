@@ -17,15 +17,22 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install dependencies
+      - name: Detect package manager and install deps
         run: |
-         echo "Checking if repo uses npm workspaces"
+         echo "Detecting package manager..."
 
-         if node -e "process.exit(require('./package.json').workspaces ? 0 : 1)"; then
-          echo "Workspaces detected -> installing with workspace support"
-          npm install --workspaces
+         if [ -f pnpm-lock.yaml ]; then
+          echo "PNPM project detected"
+          npm install -g pnpm
+          pnpm install
+
+         elif [ -f yarn.lock ]; then
+          echo "Yarn project detected"
+          npm install -g yarn
+          yarn install
+
          else
-          echo "No workspaces -> installing normally"
+          echo "NPM project detected"
           npm install
          fi
 
