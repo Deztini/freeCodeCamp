@@ -22,9 +22,14 @@ async function main () {
   await runTests(framework)
 
   const filePath = fileMap[framework]
+  console.log('Expecting results at:', filePath)
+  console.log('File exists?', fs.existsSync(filePath))
+  
   const failedTest = parseTestResults(filePath, framework)
+   console.log('Failed tests found:', failedTests.length)
 
   const totalTests = getTotalTestCount(filePath, framework)
+   console.log('Total tests:', totalTests)
 
   const flakyResults = await rerunTests(failedTest, framework)
 
