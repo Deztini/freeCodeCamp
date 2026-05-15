@@ -23,6 +23,8 @@ async function main () {
   await runTests(framework)
 
   const filePath = fileMap[framework]
+  const raw = fs.readFileSync(filePath, 'utf-8')
+console.log('Raw JSON (first 500 chars):', raw.slice(0, 500))
   console.log('Expecting results at:', filePath)
   console.log('File exists?', fs.existsSync(filePath))
   
