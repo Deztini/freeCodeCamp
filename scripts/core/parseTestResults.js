@@ -65,14 +65,8 @@ function getTotalTestCount (filePath, framework) {
   }
 
   if (framework === 'playwright') {
-    let count = 0
-    data.suites?.forEach((suite) => {
-      suite.specs?.forEach(() => count++)
-    })
-    return count
-  }
-
-  return 0
+    const stats = data.stats || {}
+  return (stats.expected || 0) + (stats.unexpected || 0) + (stats.skipped || 0)
 }
 
 function parseTestResults (filePath, framework) {
@@ -134,11 +128,17 @@ function parseTestResults (filePath, framework) {
   if (framework === 'playwright') {
     const results = []
 
-    data.suites?.forEach((suite) => {
+   
+  function traverseSuites(suites) {
+    if (!suites) return
+    for (const suite of suites) {
+
+      if (suite.suites) traverseSuites(suite.suites)
+
       suite.specs?.forEach((spec) => {
         spec.tests?.forEach((test) => {
           test.results?.forEach((result) => {
-            if (result.status === 'failed') {
+            if (result.status === 'failed' || result.status === 'unexpected') {
               results.push({
                 id: crypto.randomUUID(),
                 name: spec.title,
@@ -150,9 +150,12 @@ function parseTestResults (filePath, framework) {
           })
         })
       })
-    })
+    }
+  }
 
-    return results
+  traverseSuites(data.suites)
+  return results
+
   }
 
   return []
