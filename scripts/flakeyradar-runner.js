@@ -27,7 +27,7 @@ async function main () {
   console.log('File exists?', fs.existsSync(filePath))
   
   const failedTest = parseTestResults(filePath, framework)
-   console.log('Failed tests found:', failedTests.length)
+   console.log('Failed tests found:', failedTest.length)
 
   const totalTests = getTotalTestCount(filePath, framework)
    console.log('Total tests:', totalTests)
