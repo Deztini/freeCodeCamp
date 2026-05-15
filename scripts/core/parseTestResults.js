@@ -67,6 +67,7 @@ function getTotalTestCount (filePath, framework) {
   if (framework === 'playwright') {
     const stats = data.stats || {}
   return (stats.expected || 0) + (stats.unexpected || 0) + (stats.skipped || 0)
+  }
 }
 
 function parseTestResults (filePath, framework) {
