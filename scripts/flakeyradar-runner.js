@@ -3,6 +3,7 @@ const { parseTestResults, getTotalTestCount } = require('./core/parseTestResults
 const { rerunTests } = require('./core/rerunTests')
 const { runTests } = require('./core/runTests')
 const { writeJSON } = require('./utils/file')
+const fs = require("fs")
 
 async function main () {
   const fileMap = {
