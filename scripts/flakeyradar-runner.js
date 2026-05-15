@@ -25,6 +25,14 @@ async function main () {
   const filePath = fileMap[framework]
   const raw = fs.readFileSync(filePath, 'utf-8')
 console.log('Raw JSON (first 500 chars):', raw.slice(0, 500))
+  const data = JSON.parse(raw)
+console.log('Top-level keys:', Object.keys(data))
+console.log('suites length:', data.suites?.length)
+console.log('stats:', JSON.stringify(data.stats))
+if (data.suites?.[0]) {
+  console.log('First suite keys:', Object.keys(data.suites[0]))
+  console.log('First suite:', JSON.stringify(data.suites[0]).slice(0, 800))
+}
   console.log('Expecting results at:', filePath)
   console.log('File exists?', fs.existsSync(filePath))
   
